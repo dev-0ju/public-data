@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "version": "2026.09-kasi",
+  "version": "2026.09-kasi+fixed",
   "validYears": [
     2023,
-    2028
+    2035
   ],
   "holidays": [
     {
@@ -734,6 +734,426 @@
     },
     {
       "date": "2028-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2029-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2030-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2031-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2032-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2033-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2034-12-25",
+      "nameKey": "holiday.christmas",
+      "name": "성탄절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-01-01",
+      "nameKey": "holiday.new_year",
+      "name": "신정",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-03-01",
+      "nameKey": "holiday.independence_movement",
+      "name": "삼일절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-05-01",
+      "nameKey": "holiday.labor_day",
+      "name": "근로자의날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-05-05",
+      "nameKey": "holiday.childrens_day",
+      "name": "어린이날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-06-06",
+      "nameKey": "holiday.memorial_day",
+      "name": "현충일",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-07-17",
+      "nameKey": "holiday.constitution",
+      "name": "제헌절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-08-15",
+      "nameKey": "holiday.liberation",
+      "name": "광복절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-10-03",
+      "nameKey": "holiday.national_foundation",
+      "name": "개천절",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-10-09",
+      "nameKey": "holiday.hangeul",
+      "name": "한글날",
+      "isSubstitute": false
+    },
+    {
+      "date": "2035-12-25",
       "nameKey": "holiday.christmas",
       "name": "성탄절",
       "isSubstitute": false
