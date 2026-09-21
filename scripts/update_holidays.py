@@ -54,6 +54,39 @@ LUNAR_GROUPS = {
 }
 
 
+# 날짜가 법으로 고정된 공휴일(월, 일). 공식 고시가 아직 없는 미래 연도를 --fill-fixed-through로
+# 채울 때 쓴다. 음력 기반(설날/추석/부처님오신날), 대체공휴일, 선거일, 임시공휴일은 해마다 달라지므로
+# 넣지 않는다. 그 해의 공식 데이터가 나오면 --years 범위를 넓혀 덮어쓰면 된다.
+FIXED_HOLIDAYS = [
+    (1, 1, "holiday.new_year", "신정"),
+    (3, 1, "holiday.independence_movement", "삼일절"),
+    (5, 1, "holiday.labor_day", "근로자의날"),
+    (5, 5, "holiday.childrens_day", "어린이날"),
+    (6, 6, "holiday.memorial_day", "현충일"),
+    (7, 17, "holiday.constitution", "제헌절"),
+    (8, 15, "holiday.liberation", "광복절"),
+    (10, 3, "holiday.national_foundation", "개천절"),
+    (10, 9, "holiday.hangeul", "한글날"),
+    (12, 25, "holiday.christmas", "성탄절"),
+]
+
+
+def fill_fixed(rows: list, from_year: int, through_year: int) -> list:
+    """공식 데이터가 없는 연도를 날짜 고정 공휴일로만 채운다.
+
+    설날/추석/부처님오신날과 대체공휴일은 빠지므로 그 해 달력은 일부만 표시된다.
+    """
+    added = []
+    for year in range(from_year, through_year + 1):
+        for month, day, name_key, name in FIXED_HOLIDAYS:
+            added.append({"date": f"{year}-{month:02d}-{day:02d}", "nameKey": name_key,
+                          "name": name, "isSubstitute": False})
+    if added:
+        print(f"고정 공휴일 채움: {from_year}~{through_year} {len(added)}건 "
+              f"(설날/추석/부처님오신날/대체공휴일 제외)")
+    return sorted(rows + added, key=lambda row: (row["date"], row["nameKey"]))
+
+
 def fetch_year(key: str, year: int) -> list:
     query = urllib.parse.urlencode(
         {"ServiceKey": key, "solYear": year, "numOfRows": 200, "_type": "json"}
@@ -136,6 +169,8 @@ def main() -> int:
                         help="공공데이터포털 인증키. 기본값은 환경변수 DATA_GO_KR_KEY")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help=f"출력 파일 (기본 {DEFAULT_OUTPUT})")
     parser.add_argument("--version", default=None, help="version 값 (기본: 실행 시점 연.월)")
+    parser.add_argument("--fill-fixed-through", type=int, default=None, metavar="YYYY",
+                        help="공식 데이터가 없는 연도를 이 해까지 날짜 고정 공휴일로 채운다 (예: 2035)")
     parser.add_argument("--write", action="store_true", help="파일에 실제로 쓴다. 없으면 미리보기만 한다.")
     args = parser.parse_args()
 
@@ -166,11 +201,20 @@ def main() -> int:
         return 1
 
     rows = convert(items_by_year)
+    last_year = max(covered)
+    if args.fill_fixed_through:
+        if args.fill_fixed_through <= last_year:
+            print(f"--fill-fixed-through({args.fill_fixed_through})가 공식 데이터 마지막 연도"
+                  f"({last_year}) 이하라 채우지 않는다.", file=sys.stderr)
+        else:
+            rows = fill_fixed(rows, last_year + 1, args.fill_fixed_through)
+            last_year = args.fill_fixed_through
+
     version = args.version or date.today().strftime("%Y.%m")
     catalog = {
         "schemaVersion": SCHEMA_VERSION,
         "version": version,
-        "validYears": [min(covered), max(covered)],
+        "validYears": [min(covered), last_year],
         "holidays": rows,
     }
 
