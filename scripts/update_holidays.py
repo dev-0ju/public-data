@@ -12,10 +12,14 @@
   DATA_GO_KR_KEY  공공데이터포털 인증키 (필수)
   GITHUB_TOKEN    공개 저장소 업로드용 (--publish 일 때만 필요)
 
-사용 예:
+사용 예(연도를 지정할 필요가 없다. 아무 때나 같은 명령으로 돌리면 된다):
     python3 scripts/holiday-update.py                      # 미리보기. 변경점만 출력한다
     python3 scripts/holiday-update.py --write              # 앱 번들 파일 갱신
     python3 scripts/holiday-update.py --write --publish    # 공개 저장소까지 업로드
+    python3 scripts/holiday-update.py --verify-rules       # 규칙이 공식 데이터를 재현하는지 확인
+
+연도 범위는 자동으로 정한다. 공식 고시가 나와 있는 해까지는 공식 데이터를 쓰고, 그 뒤부터
+올해 + 10년까지는 규칙으로 만든다. 새 고시가 나오면 다음 실행에서 저절로 공식 데이터로 바뀐다.
 
 주의:
     version 값이 바뀌어야 앱이 변경을 감지한다. 기본값은 실행 시점의 연.월이다.
@@ -39,6 +43,10 @@ BUNDLE_PATH = "apps/ios/schedulit/Resources/Holidays/holidays-kr.json"
 PUBLIC_REPO = "dev-0ju/public-data"
 PUBLIC_PATH = "holidays/kr.json"
 SCHEMA_VERSION = 1
+# 기본 데이터 시작 연도. 지난 공휴일도 달력에서 볼 수 있도록 유지한다.
+DEFAULT_START_YEAR = 2023
+# 공식 고시가 없는 미래를 규칙으로 몇 년치 채울지. 매번 돌릴 때마다 기준이 올해로 밀린다.
+FUTURE_YEARS = 10
 
 # 특일정보의 dateName -> (표시 키, 표시 이름). 앱의 Localizable 키와 일치해야 한다.
 NAME_MAP = {
@@ -385,10 +393,13 @@ def publish(catalog: dict, token: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="공휴일 데이터를 받아 앱 번들과 공개 저장소를 맞춘다.")
-    parser.add_argument("--years", default="2023-2028", help="연도 범위 (예: 2023-2028)")
+    parser.add_argument("--start", type=int, default=DEFAULT_START_YEAR,
+                        help=f"데이터 시작 연도 (기본 {DEFAULT_START_YEAR})")
+    parser.add_argument("--through", type=int, default=None, metavar="YYYY",
+                        help="데이터 끝 연도 (기본: 올해 + %d년)" % FUTURE_YEARS)
+    parser.add_argument("--years", default=None,
+                        help="연도 범위를 직접 지정한다 (예: 2023-2028). 지정하면 --start/--through를 대신한다")
     parser.add_argument("--version", default=None, help="version 값 (기본: 실행 시점 연.월)")
-    parser.add_argument("--fill-fixed-through", type=int, default=None, metavar="YYYY",
-                        help="공식 데이터가 없는 연도를 이 해까지 날짜 고정 공휴일로 채운다 (예: 2035)")
     parser.add_argument("--output", default=BUNDLE_PATH,
                         help=f"출력 파일 경로 (기본 {BUNDLE_PATH}). 공개 저장소에서 직접 쓸 때는 holidays/kr.json")
     parser.add_argument("--verify-rules", action="store_true",
@@ -410,14 +421,22 @@ def main() -> int:
         print("GITHUB_TOKEN이 없습니다. 업로드하려면 .env에 넣으세요.", file=sys.stderr)
         return 1
 
-    try:
-        start, end = (int(part) for part in args.years.split("-"))
-    except ValueError:
-        print("연도 범위 형식이 잘못되었습니다. 예: --years 2023-2028", file=sys.stderr)
+    start = args.start
+    through = args.through or (date.today().year + FUTURE_YEARS)
+    if args.years:
+        try:
+            start, through = (int(part) for part in args.years.split("-"))
+        except ValueError:
+            print("연도 범위 형식이 잘못되었습니다. 예: --years 2023-2028", file=sys.stderr)
+            return 1
+    if through < start:
+        print(f"끝 연도({through})가 시작 연도({start})보다 앞입니다.", file=sys.stderr)
         return 1
 
-    items_by_year, covered = {}, []
-    for year in range(start, end + 1):
+    # 공식 고시가 어디까지 나와 있는지는 조회해 봐야 안다. 빈 응답이 두 해 연속이면 거기서 끊고,
+    # 나머지 연도는 규칙으로 만든다(연도를 매번 지정하지 않아도 같은 명령으로 최신 상태가 된다).
+    items_by_year, covered, empty_streak = {}, [], 0
+    for year in range(start, through + 1):
         try:
             items = fetch_year(key, year)
         except Exception as error:  # 조회 실패한 연도만 건너뛴다
@@ -426,7 +445,15 @@ def main() -> int:
         if items:
             items_by_year[year] = items
             covered.append(year)
-        print(f"{year}: {len(items)}건")
+            empty_streak = 0
+            print(f"{year}: 공식 {len(items)}건")
+        else:
+            empty_streak += 1
+            print(f"{year}: 공식 고시 없음")
+            if empty_streak >= 2:
+                print(f"  (공식 데이터는 {max(covered) if covered else start - 1}년까지. "
+                      f"이후는 규칙으로 만든다)")
+                break
 
     if not covered:
         print("가져온 데이터가 없습니다.", file=sys.stderr)
@@ -438,18 +465,13 @@ def main() -> int:
         return verify_rules(key, rows, covered)
 
     last_year = max(covered)
-    if args.fill_fixed_through:
-        if args.fill_fixed_through <= last_year:
-            print(f"--fill-fixed-through({args.fill_fixed_through})가 공식 데이터 마지막 연도"
-                  f"({last_year}) 이하라 채우지 않는다.", file=sys.stderr)
-        else:
-            generated = []
-            for year in range(last_year + 1, args.fill_fixed_through + 1):
-                generated.extend(generate_year(key, year))
-            print(f"규칙으로 생성: {last_year + 1}~{args.fill_fixed_through} {len(generated)}건 "
-                  f"(선거일/임시공휴일 제외)")
-            rows = sorted(rows + generated, key=lambda row: (row["date"], row["nameKey"]))
-            last_year = args.fill_fixed_through
+    if through > last_year:
+        generated = []
+        for year in range(last_year + 1, through + 1):
+            generated.extend(generate_year(key, year))
+        print(f"규칙으로 생성: {last_year + 1}~{through} {len(generated)}건 (선거일/임시공휴일 제외)")
+        rows = sorted(rows + generated, key=lambda row: (row["date"], row["nameKey"]))
+        last_year = through
 
     catalog = {
         "schemaVersion": SCHEMA_VERSION,
